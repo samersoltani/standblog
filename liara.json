@@ -7,7 +7,7 @@
   "disks": [
     {
       "name": "my-standblog",
-      "mountTo": "path/to/folder"
+      "mountTo": "/usr/src/app/path/to/folder"
     }
   ]
 }

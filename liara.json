@@ -1,8 +1,13 @@
 {
-  "platform": "django",
   "app": "my-standblog",
-  "django": {
-    "collectStatic": true,
-    "migrate": true
-  }
-} 
+  "port": 80,
+  "build": {
+    "location": "iran"
+  },
+  "disks": [
+    {
+      "name": "my-standblog",
+      "mountTo": "path/to/folder"
+    }
+  ]
+}

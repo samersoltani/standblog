@@ -1,10 +1,8 @@
 {
   "platform": "django",
-  "app": "my-StandBlog",
+  "app": "my-standblog",
   "django": {
-    "collectStatic": true
+    "collectStatic": true,
+    "migrate": true
   }
-}
-
-
-
+} 

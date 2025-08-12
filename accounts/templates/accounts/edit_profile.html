@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}ویرایش پروفایل{% endblock %}
+
+{% block content %}
+
+<section class="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="down-contact">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto"> <!-- استفاده از mx-auto برای وسط‌چین کردن فرم -->
+                            <div class="sidebar-item contact-form">
+                                <div class="sidebar-heading">
+                                    <h2>ویرایش پروفایل کاربری</h2>
+                                </div>
+                                <div class="content">
+                                    
+                                    <!-- نمایش پیام موفقیت‌آمیز بودن ویرایش -->
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ message.tags }} text-center">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <!-- 
+                                        نکته بسیار مهم: برای آپلود فایل (عکس پروفایل)
+                                        باید حتماً enctype="multipart/form-data" را به تگ فرم اضافه کنیم.
+                                    -->
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+
+                                        <!-- بخش نمایش عکس فعلی پروفایل -->
+                                        {% if profile_form.instance.image %}
+                                        <div class="text-center mb-4">
+                                            <img src="{{ profile_form.instance.image.url }}" alt="تصویر پروفایل" class="img-thumbnail rounded-circle" width="150" height="150" style="object-fit: cover;">
+                                            <p class="mt-2 text-muted">تصویر فعلی شما</p>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <hr>
+                                        <h4 class="mb-3">اطلاعات اصلی</h4>
+                                        
+                                        <!-- نمایش فیلدهای فرم اطلاعات کاربر -->
+                                        <div class="form-group mb-3">
+                                            <label for="{{ user_form.first_name.id_for_label }}">نام:</label>
+                                            {% render_field user_form.first_name class="form-control" %}
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="{{ user_form.last_name.id_for_label }}">نام خانوادگی:</label>
+                                            {% render_field user_form.last_name class="form-control" %}
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="{{ user_form.email.id_for_label }}">ایمیل:</label>
+                                            {% render_field user_form.email class="form-control" %}
+                                        </div>
+                                        
+                                        <hr>
+                                        <h4 class="mb-3">اطلاعات پروفایل</h4>
+                                        
+                                        <!-- نمایش فیلدهای فرم پروفایل -->
+                                        <div class="form-group mb-3">
+                                            <label for="{{ profile_form.fathers_name.id_for_label }}">نام پدر:</label>
+                                            {% render_field profile_form.fathers_name class="form-control" %}
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="{{ profile_form.mli_code.id_for_label }}">کد ملی:</label>
+                                            {% render_field profile_form.mli_code class="form-control" %}
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="{{ profile_form.image.id_for_label }}">تغییر تصویر پروفایل:</label>
+                                            {% render_field profile_form.image class="form-control" %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="main-button">ذخیره تغییرات</button>
+                                            <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary">تغییر رمز عبور</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

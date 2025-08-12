@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %} <!-- این تگ برای نمایش زیباتر اعداد و تاریخ است -->
+
+{% block content %}
+
+<!-- ============================================ -->
+<!-- بخش هدر صفحه (با عنوان داینامیک) -->
+<!-- ============================================ -->
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        {% if category %}
+                            <!-- اگر کاربر در صفحه یک دسته‌بندی خاص بود -->
+                            <h4>مقالات دسته‌بندی:</h4>
+                            <h2>{{ category.title }}</h2>
+                        {% elif search_query %}
+                            <!-- اگر کاربر چیزی را جستجو کرده بود -->
+                            <h4>نتایج جستجو برای:</h4>
+                            <h2>"{{ search_query }}"</h2>
+                        {% else %}
+                            <!-- در حالت عادی (صفحه اصلی مقالات) -->
+                            <h4>آخرین نوشته‌ها</h4>
+                            <h2>جدیدترین مقالات وبلاگ ما</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ============================================ -->
+<!-- بخش اصلی نمایش مقالات -->
+<!-- ============================================ -->
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8"> <!-- ستون اصلی محتوا -->
+                <div class="all-blog-posts">
+                    <div class="row">
+
+                        <!-- شروع حلقه برای نمایش هر مقاله در لیست مقالات -->
+                        {% for article in articles %}
+                        <div class="col-lg-6">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    <!-- بررسی می‌کند که آیا مقاله تصویر دارد یا نه -->
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                                    {% else %}
+                                        <!-- در صورت نبود تصویر، از یک تصویر پیش‌فرض استفاده کن -->
+                                        <img src="{% static 'images/default-image.png' %}" alt="No Image Available">
+                                    {% endif %}
+                                </div>
+                                <div class="down-content">
+                                    <!-- نمایش دسته‌بندی‌های مقاله -->
+                                    <span>
+                                        {% for cat in article.category.all %}
+                                            {{ cat.title }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                    
+                                    <!-- لینک داینامیک به صفحه جزئیات مقاله -->
+                                    <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
+                                    
+                                    <ul class="post-info">
+                                        <!-- نمایش نام نویسنده (اگر نام کامل نداشت، یوزرنیم را نشان بده) -->
+                                        <li><a href="#">{{ article.author.get_full_name|default:article.author.username }}</a></li>
+                                        <!-- نمایش تاریخ با فرمت خوانا -->
+                                        <li><a href="#">{{ article.created|naturaltime }}</a></li>
+                                        <!-- نمایش تعداد کامنت‌ها به صورت داینامیک -->
+                                        <li><a href="{{ article.get_absolute_url }}#comments">{{ article.comments.count }} نظر</a></li>
+                                    </ul>
+                                    
+                                    <!-- نمایش خلاصه‌ای از متن مقاله (۳۰ کلمه اول) -->
+                                    <p>{{ article.body|safe|truncatewords_html:30 }}</p>
+                                    
+                                    <div class="post-options">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <!-- نمایش دسته‌بندی‌ها به عنوان تگ -->
+                                                <ul class="post-tags">
+                                                    <li><i class="fa fa-tags"></i></li>
+                                                    {% for cat in article.category.all %}
+                                                        <li><a href="{% url 'blog:category_list' cat.pk %}">{{ cat.title }}</a>{% if not forloop.last %},{% endif %}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-share">
+                                                    <li><i class="fa fa-share-alt"></i></li>
+                                                    <li><a href="#">Facebook</a>,</li>
+                                                    <li><a href="#"> Twitter</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% empty %}
+                        <!-- اگر هیچ مقاله‌ای برای نمایش وجود نداشت -->
+                        <div class="col-lg-12">
+                            <div class="alert alert-warning text-center">
+                                <h4>متاسفانه مقاله‌ای برای نمایش یافت نشد.</h4>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- پایان حلقه مقالات -->
+
+                        <!-- ============================================ -->
+                        <!-- بخش صفحه‌بندی (Pagination) -->
+                        <!-- ============================================ -->
+                        <div class="col-lg-12">
+                            {% if page_obj.has_other_pages %}
+                            <ul class="page-numbers">
+                                <!-- دکمه صفحه قبل -->
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
+                                {% endif %}
+
+                                <!-- لیست شماره صفحات -->
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="active"><a href="#">{{ i }}</a></li>
+                                    {% else %}
+                                        <li><a href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- دکمه صفحه بعد -->
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- سایدبار (Sidebar) -->
+            <!-- ============================================ -->
+            {% include "includes/sidebar.html" %}
+            
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    {% for m in message_list %}
+
+    <p>{{ m.title }}- {{ m.text }} <span><a href="{% url "blog:message_edit" m.id %}" class="btn btn-primery">Edit</a></span></p>
+
+    {% endfor %}
+</body>
+</html>

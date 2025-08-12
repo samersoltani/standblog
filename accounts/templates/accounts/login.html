@@ -1,0 +1,110 @@
+{% load static %}
+{% load widget_tweaks %} <!-- کتابخانه ویجت تویکس را لود می‌کنیم -->
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"> <!-- زبان و جهت را فارسی می‌کنیم -->
+<head>
+    <title>ورود به حساب کاربری</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- آیکون سایت -->
+    <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+    
+    <!-- لینک فایل‌های CSS (بدون تغییر) -->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('{% static 'images/bg-01.jpg' %}');">
+            <div class="wrap-login100">
+                <form method="post" class="login100-form validate-form">
+                    {% csrf_token %}
+                    
+                    <span class="login100-form-logo">
+                        <i class="zmdi zmdi-landscape"></i>
+                    </span>
+                    
+                    <span class="login100-form-title p-b-34 p-t-27">
+                        ورود به حساب
+                    </span>
+
+                    <!-- ============================================ -->
+                    <!-- بخش نمایش خطاها و پیام‌ها (بسیار مهم) -->
+                    <!-- ============================================ -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger text-center">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- ============================================ -->
+
+                    <!-- فیلد نام کاربری -->
+                    <div class="wrap-input100 validate-input" data-validate="نام کاربری را وارد کنید">
+                        <!-- استفاده از widget_tweaks برای اضافه کردن کلاس و placeholder -->
+                        {% render_field form.username class="input100" placeholder="نام کاربری" %}
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+                    
+                    <!-- فیلد رمز عبور -->
+                    <div class="wrap-input100 validate-input" data-validate="رمز عبور را وارد کنید">
+                        {% render_field form.password class="input100" placeholder="رمز عبور" %}
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+                    
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit">
+                            ورود
+                        </button>
+                    </div>
+                    
+                    <div class="text-center p-t-40">
+                        <!-- لینک داینامیک بازیابی رمز عبور -->
+                        <a class="txt1" href="{% url 'accounts:password_reset' %}">
+                            رمز عبور را فراموش کرده‌اید؟
+                        </a>
+                    </div>
+
+                    <div class="text-center p-t-20">
+                        <!-- لینک داینامیک ثبت‌نام -->
+                        <a class="txt1" href="{% url 'accounts:register' %}">
+                            حساب کاربری ندارید؟ ثبت‌نام کنید
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- اسکریپت‌ها (بدون تغییر) -->
+    <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

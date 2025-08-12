@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================ -->
+<!-- بخش هدر صفحه -->
+<!-- ============================================ -->
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4>
+                            {% for cat in article.category.all %}
+                                {{ cat.title }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </h4>
+                        <h2>{{ article.title }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ============================================ -->
+<!-- بخش اصلی محتوای مقاله -->
+<!-- ============================================ -->
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                                    {% endif %}
+                                </div>
+                                <div class="down-content">
+                                    <span>{{ article.category.all.first }}</span>
+                                    <a><h4>{{ article.title }}</h4></a>
+                                    <ul class="post-info">
+                                        <li><a href="#">{{ article.author.get_full_name|default:article.author.username }}</a></li>
+                                        <li><a href="#">{{ article.created|naturaltime }}</a></li>
+                                        <li><a href="#comments-section">{{ article.comments.count }} نظر</a></li>
+                                    </ul>
+
+                                    <div class="article-body">
+                                        {{ article.body|safe }}
+                                    </div>
+
+                                    <div class="post-options">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <ul class="post-tags">
+                                                    <li><i class="fa fa-tags"></i></li>
+                                                    {% for cat in article.category.all %}
+                                                        <li><a href="{% url 'blog:category_list' cat.pk %}">{{ cat.title }}</a>{% if not forloop.last %},{% endif %}</li>
+                                                    {% empty %}
+                                                        <li>بدون دسته‌بندی</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-share">
+                                                    <li>
+                                                        <a href="{% url 'blog:like_article' article.slug %}" style="text-decoration: none; color: #f48840;">
+                                                            {% if is_liked %}
+                                                                <i class="fa fa-heart" style="font-size: 20px;"></i>
+                                                            {% else %}
+                                                                <i class="fa fa-heart-o" style="font-size: 20px;"></i>
+                                                            {% endif %}
+                                                            <span style="font-size: 16px; vertical-align: middle; margin-right: 5px;">{{ total_likes }}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item comments" id="comments-section">
+                                <div class="sidebar-heading">
+                                    <h2>{{ article.comments.count }} نظر</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        {% for comment in article.comments.all %}
+                                            {% if not comment.parent %}
+                                                {% include "includes/comment_template.html" with comment=comment %}
+                                            {% endif %}
+                                        {% empty %}
+                                            <li><p>هنوز نظری برای این مقاله ثبت نشده است. شما اولین نفر باشید!</p></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="col-lg-12">
+                            <div class="sidebar-item submit-comment">
+                                <div class="sidebar-heading">
+                                    <h2>نظر شما</h2>
+                                </div>
+                                <div class="content">
+                                    {% if user.is_authenticated %}
+                                        <form id="comment" action="{% url 'blog:add_comment' article.slug %}" method="post">
+                                            {% csrf_token %}
+                                            <!-- 
+                                                تغییر کلیدی اینجاست!
+                                                نام فیلد مخفی را به 'parent' تغییر می‌دهیم تا با مدل هماهنگ باشد.
+                                                ویوی ما این فیلد را به صورت دستی پردازش می‌کند.
+                                            -->
+                                            <input type="hidden" name="parent_id" id="parent_id" value="">
+                                            
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <fieldset>
+                                                        <!-- نمایش فیلد body از فرم جنگو -->
+                                                        {{ comment_form.body }}
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <fieldset>
+                                                        <button type="submit" id="form-submit" class="main-button">ارسال نظر</button>
+                                                        <button type="button" id="cancel-reply" class="main-button" style="display:none; background-color: #6c757d;" onclick="cancelReply()">انصراف</button>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    {% else %}
+                                        <p>برای ارسال نظر، لطفا <a href="{% url 'accounts:login' %}?next={{ request.path }}">وارد شوید</a>.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+<!-- ... (بقیه تمپلیت و اسکریپت جاوااسکریپت بدون تغییر باقی می‌ماند) ... -->
+<script>
+    // این تابع ID نظر والد را در فیلد مخفی فرم قرار می‌دهد
+    function setParentId(commentId) {
+        document.getElementById('parent_id').value = commentId;
+        document.querySelector('.submit-comment .sidebar-heading h2').innerText = 'ارسال پاسخ';
+        document.getElementById('cancel-reply').style.display = 'inline-block';
+        document.getElementById('comment').scrollIntoView({ behavior: 'smooth' });
+        document.querySelector('#comment textarea').focus();
+    }
+
+    // این تابع حالت پاسخ را لغو می‌کند
+    function cancelReply() {
+        document.getElementById('parent_id').value = '';
+        document.querySelector('.submit-comment .sidebar-heading h2').innerText = 'نظر شما';
+        document.getElementById('cancel-reply').style.display = 'none';
+    }
+</script>
+{% endblock %}

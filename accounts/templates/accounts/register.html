@@ -1,0 +1,78 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <title>ثبت نام در سایت</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('{% static 'images/bg-01.jpg' %}');">
+            <div class="wrap-login100">
+                <form method="post" class="login100-form validate-form">
+                    {% csrf_token %}
+                    
+                    <span class="login100-form-logo"><i class="zmdi zmdi-landscape"></i></span>
+                    <span class="login100-form-title p-b-34 p-t-27">ایجاد حساب کاربری</span>
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger text-center p-2" style="font-size: 0.9rem;">
+                            {{ form.non_field_errors }}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p class="mb-1">{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="wrap-input100 validate-input" data-validate="نام کاربری را وارد کنید">
+                        {% render_field form.username class="input100" placeholder="نام کاربری" %}
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="ایمیل معتبر وارد کنید">
+                        {% render_field form.email class="input100" placeholder="ایمیل" %}
+                        <span class="focus-input100" data-placeholder="&#xf15a;"></span>
+                    </div>
+                    
+                    <div class="wrap-input100 validate-input" data-validate="رمز عبور را وارد کنید">
+                        {% render_field form.password class="input100" placeholder="رمز عبور" %}
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="رمز عبور را تکرار کنید">
+                        {% render_field form.password2 class="input100" placeholder="تکرار رمز عبور" %}
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+                    
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit">ثبت نام</button>
+                    </div>
+                    
+                    <div class="text-center p-t-40">
+                        <a class="txt1" href="{% url 'accounts:login' %}">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- اسکریپت‌ها -->
+</body>
+</html>

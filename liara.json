@@ -1,0 +1,10 @@
+{
+  "platform": "django",
+  "app": "my-StandBlog",
+  "django": {
+    "collectStatic": true
+  }
+}
+
+
+

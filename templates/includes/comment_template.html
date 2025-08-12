@@ -1,0 +1,26 @@
+{% load static %}
+{% load humanize %}
+
+<li>
+    <div class="author-thumb">
+        <!-- TODO: در آینده اینجا را با تصویر پروفایل واقعی کاربر جایگزین کنید -->
+        <img src="{% static 'assets/images/comment-author-01.jpg' %}" alt="">
+    </div>
+    <div class="right-content">
+        <h4>{{ comment.user.get_full_name|default:comment.user.username }}<span>{{ comment.created_at|naturaltime }}</span></h4>
+        <p>{{ comment.body|linebreaks }}</p>
+        <!-- این دکمه تابع جاوااسکریپت را که در article_details.html است، فراخوانی می‌کند -->
+        <button class="btn btn-sm btn-outline-secondary" onclick="setParentId({{ comment.id }})">پاسخ</button>
+    </div>
+</li>
+
+<!-- 
+    جادوی اصلی اینجاست!
+    این حلقه برای نمایش پاسخ‌های این نظر، دوباره همین فایل (comment_template.html) را فراخوانی می‌کند.
+    این کار به صورت بازگشتی (recursive) انجام می‌شود و باعث نمایش نظرات تودرتو می‌شود.
+-->
+{% for reply in comment.replies.all %}
+    <li class="replied">
+        {% include "includes/comment_template.html" with comment=reply %}
+    </li>
+{% endfor %}

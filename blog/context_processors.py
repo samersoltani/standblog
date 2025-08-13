@@ -19,3 +19,9 @@ def sidebar_data(request):
         'recent_posts': recent_posts,
         'all_categories': all_categories,
     }
+
+
+def all_categories(request):
+   # این کد با یک کوئری تمام دسته‌بندی‌هایی که حداقل یک مقاله دارند را پیدا می‌کند
+    categories = Category.objects.annotate(num_articles=Count('articles')).filter(num_articles__gt=0)
+    return {'all_categories': categories}

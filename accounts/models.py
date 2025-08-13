@@ -46,3 +46,10 @@ def save_user_profile(sender, instance, **kwargs):
     پروفایل مربوط به آن هم ذخیره شود.
     """
     instance.profile.save()
+
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

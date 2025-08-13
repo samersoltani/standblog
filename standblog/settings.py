@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY','django-insecure-@^)l=__m&yom^(6ahk1*6z$@=1ag7%ub78r^#aimgzmnvfu*lg')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['my-standblog.liara.run']
+ALLOWED_HOSTS = ['my-standblog.liara.run'] 
 
 
 # Application definition
@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blog.context_processors.sidebar_data',
+                'blog.context_processors.all_categories', 
                 
             ],
         },

@@ -2,12 +2,16 @@
   "app": "my-standblog",
   "port": 80,
   "build": {
-    "location": "iran"
+    "location": "iran",
+    "pre-build": [
+      "python manage.py collectstatic --no-input",
+      "python manage.py migrate"
+    ]
   },
   "disks": [
     {
       "name": "my-standblog",
-      "mountTo": "/usr/src/app/path/to/folder"
+      "mountTo": "/usr/src/app/media"
     }
   ]
 }

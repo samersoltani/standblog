@@ -1,17 +1,9 @@
 {
-  "app": "my-standblog",
-  "port": 80,
-  "build": {
-    "location": "iran",
-    "pre-build": [
-      "python manage.py collectstatic --no-input",
-      "python manage.py migrate"
+  "deploy": {
+    "pipeline": "django",
+    "post_deploy": [
+      "python manage.py migrate --no-input",
+      "python manage.py collectstatic --no-input"
     ]
-  },
-  "disks": [
-    {
-      "name": "my-standblog",
-      "mountTo": "/usr/src/app/media"
-    }
-  ]
+  }
 }

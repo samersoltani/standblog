@@ -1,31 +1,14 @@
-# بایگانی‌ها و فایل‌های فشرده
-*.zip
-*.tar.gz
-
-# فایل‌های مربوط به پایتون
 *.pyc
-__pycache__/
-*.egg-info/
-venv/
-env/
+*~
+__pycache__
 .env
-
-# فایل‌های مربوط به ویرایشگر کد
-.vscode/
+.env.local
+venv/
+.venv/
+env/
 .idea/
-
-# فایل‌های سیستم عامل
-.DS_Store
-Thumbs.db
-
-# دیتابیس‌ها
-*.sqlite3
+.vscode/
+media/
+staticfiles/
 db.sqlite3
-
-# فایل‌های مربوط به جنگو
-/static/
-/media/
-*.log
-
-# متغیرهای محیطی
-.env.*
+.DS_Store

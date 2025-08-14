@@ -1,9 +1,15 @@
 {
-  "deploy": {
-    "pipeline": "django",
-    "post_deploy": [
-      "python manage.py migrate --no-input",
-      "python manage.py collectstatic --no-input"
-    ]
-  }
+  "platform": "django",
+  "app": "my-standblog",
+  "port": 80,
+  "django": {
+    "collectStatic": true,
+    "migrate": true
+  },
+  "disks": [
+    {
+      "name": "my-standblog",
+      "mountTo": "/usr/src/app/media"
+    }
+  ]
 }

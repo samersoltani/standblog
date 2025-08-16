@@ -23,7 +23,7 @@ Thumbs.db
 db.sqlite3
 
 # فایل‌های مربوط به جنگو
-/static/
+/staticfiles/
 /media/
 *.log
 

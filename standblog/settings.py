@@ -31,9 +31,16 @@ SECRET_KEY = os.environ.get('SECRET_KEY','django-insecure-@^)l=__m&yom^(6ahk1*6z
 # چون متغیرهای محیطی همیشه رشته هستند، آن را با رشته 'True' مقایسه می‌کنیم.
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+
+ALLOWED_HOSTS = []
+
+# حالا آدرس دامنه Render را در صورت وجود به آن اضافه می‌کنیم
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# بهتر است آدرس محلی را هم برای تست روی کامپیوتر خودتان اضافه کنید
+ALLOWED_HOSTS.append('127.0.0.1')
 
 
 # Application definition

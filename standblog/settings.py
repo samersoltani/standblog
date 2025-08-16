@@ -169,3 +169,8 @@ LOGIN_REDIRECT_URL = 'home_app:home'
 
 # آدرس ریدایرکت بعد از خروج موفق
 LOGOUT_REDIRECT_URL = 'home_app:home'
+
+
+
+# Add this at the end of the file for security on production
+CSRF_TRUSTED_ORIGINS = ['https://standblog.onrender.com']

@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY','django-insecure-@^)l=__m&yom^(6ahk1*6z
 # این کد مقدار متغیر محیطی 'DEBUG' را می‌خواند.
 # اگر چنین متغیری وجود نداشت، مقدار پیش‌فرض 'False' را در نظر می‌گیرد.
 # چون متغیرهای محیطی همیشه رشته هستند، آن را با رشته 'True' مقایسه می‌کنیم.
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = False
 
 
 ALLOWED_HOSTS = []

@@ -55,7 +55,7 @@
   -webkit-backface-visibility: hidden;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
-  backface-visibility: hidden; /* <-- این خط اضافه شد */
+  backface-visibility: hidden; 
 }
 .owl-carousel .owl-item img {
   display: block;

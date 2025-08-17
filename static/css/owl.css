@@ -169,7 +169,7 @@
 }
 .owl-carousel .owl-item img.owl-lazy {
   transform-style: preserve-3d;
-  /* کد زیر اضافه شد */
+
   backface-visibility: hidden;
 }
 
@@ -190,7 +190,7 @@
   top: 50%;
   margin-left: -40px;
   margin-top: -40px;
-  /* background: url("owl.video.play.png") no-repeat;  <-- این خط کامنت شد تا خطای بیلد ندهد */
+
   cursor: pointer;
   z-index: 1;
   -webkit-backface-visibility: hidden;

@@ -178,5 +178,6 @@ LOGOUT_REDIRECT_URL = 'home_app:home'
 
 
 
+
 # Add this at the end of the file for security on production
 CSRF_TRUSTED_ORIGINS = ['https://standblog.onrender.com']
